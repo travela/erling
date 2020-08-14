@@ -4,6 +4,7 @@ import {
     Switch,
     Route,
     Link,
+    Redirect,
   } from "react-router-dom";
 import "../App.css";
 const axios = require('axios');
@@ -11,6 +12,8 @@ const axios = require('axios');
 
 class SignUp extends Component { 
 
+
+      
 constructor(props){
     super(props)
     this.state = { 
@@ -33,7 +36,10 @@ constructor(props){
             password : this.state.password,
             name : this.state.name,
             }
-        }).then((res) => {console.log(res); return(res);}).then((res) => this.setState({email: res.data}))
+        }).then((res) => {console.log(res); return(res);}
+            ).then((res) => this.setState({email: res.data})
+                ).catch((err) => {alert("Error: " + err.response.data)
+                console.log(err.response)})
         console.log("signUp pressed.");
     }
 
@@ -72,13 +78,14 @@ constructor(props){
   }
 
   class SignIn extends Component { 
-
+    
     constructor(props){
         super(props)
         this.state = { 
             password : "",
             email : "",
             name : "",
+            loggedIn : false,
         }
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -87,7 +94,7 @@ constructor(props){
     
     signIn(event) {
         event.preventDefault();
-        axios.get("http://lubuntu:3005/signin", {
+        axios.get("http://localhost:3005/signin", {
             params: {
             password : this.state.password,
             name : this.state.name,
@@ -96,8 +103,8 @@ constructor(props){
             console.log(res)
             console.log(res.data);
             this.setState(
-                {name : res.data.user.email})}
-                ).catch((err) => {      alert("Error: " + err.response.data)
+                {name : res.data.user.email, loggedIn : true});
+            }).catch((err) => {      alert("Error: " + err.response.data)
                                         console.log(err.response.data)})
     }
 
@@ -109,7 +116,11 @@ constructor(props){
         this.setState({name : event.target.value}) 
     }
 
-    render () {                                   
+    render () {  
+        if (this.state.loggedIn === true) {
+            return <Redirect to='/signup' />
+          }
+                                       
         return (
           <div>
                <div id='signinContainer'>
@@ -146,16 +157,19 @@ export default class Home extends Component {
        return (
         <Router>
         <div id='container'>
-            <Base/>
+            
             <Switch>
                 <Route path="/signin">
+                    <Base/>
                     <SignIn />
                 </Route>
                 <Route path="/signup">
+                    <Base/>
                     <SignUp />
                 </Route>
                 <Route path="/">
                     <h2>Welcome!</h2>
+                    <Base/>
                 </Route>
             </Switch>
         </div>

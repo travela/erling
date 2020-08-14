@@ -8,8 +8,7 @@ var Auth = new AuthServices();
             (doc) => {
                 doc.then(console.log("New Document: ", doc));
                 return next();
-            }
-        );
+            }).catch((err) => res.status(403).send(err.message));
     }
 
     function signin(req, res, next) {
@@ -18,9 +17,11 @@ var Auth = new AuthServices();
         Auth.Login(req.query.name, req.query.password).then(
             (doc) => {
                 console.log("New Document with token: ", doc);
+
                 res.send(doc);     
             }).catch((err) => res.status(401).send(err.message));
     }
+
 
     what = (req, res) => res.send('NEXT!');
 

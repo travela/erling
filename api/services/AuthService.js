@@ -4,16 +4,17 @@ var userModel = require('../models/users');
 
 
 class AuthService {
-
+  
+  signature = 'BruteForceWillNotHelpYou!§%3005';
 
   async SignUp(email, password, name) {
     const passwordHashed = await argon2.hash(password);
-
     const userRecord = await userModel.create({
       password: passwordHashed,
       email : email,
       name : name,
-    });
+    }).catch((err) => {console.log("There was an error during Signup: ", err.errmsg); throw new Error('User exists already');});
+
     return {
       // MAKE SURE TO NEVER SEND BACK THE PASSWORD!!!!
       user: {
@@ -44,19 +45,16 @@ async Login(name, password) {
     }
 }
 
-generateToken(user) {
+  generateToken(user) {
 
     const data =  {
       _id: user._id,
       name: user.name,
       email: user.email
     };
-    const signature = 'BruteForceWillNotHelpYou!§%3005';
     const expiration = '6h';
-
-    return jwt.sign({ data, }, signature, { expiresIn: expiration });
+    return jwt.sign({ data, }, this.signature, { expiresIn: expiration });
   }
-
 
 }
 
