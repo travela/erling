@@ -7,7 +7,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@font-face {
+    font-family: Chomsky;
+    src: url("Chomsky.otf") format("opentype");
+}
+
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: Chomsky, source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h2 {
+  font-family: Chomsky, source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }

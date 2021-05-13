@@ -86,6 +86,7 @@ constructor(props){
             email : "",
             name : "",
             loggedIn : false,
+            token : '',
         }
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -103,7 +104,8 @@ constructor(props){
             console.log(res)
             console.log(res.data);
             this.setState(
-                {name : res.data.user.email, loggedIn : true});
+                {token : res.data.token, loggedIn : true}, );
+            this.storeSession();
             }).catch((err) => {      alert("Error: " + err.response.data)
                                         console.log(err.response.data)})
     }
@@ -116,9 +118,14 @@ constructor(props){
         this.setState({name : event.target.value}) 
     }
 
+    storeSession(){
+        localStorage.setItem('user', this.state.name);
+        localStorage.setItem('token', this.state.token);
+      };
+
     render () {  
         if (this.state.loggedIn === true) {
-            return <Redirect to='/signup' />
+            return <Redirect to='/stank' />
           }
                                        
         return (
@@ -152,11 +159,12 @@ function Base(){
 
 export default class Home extends Component {
     state = { 
+        user : "Stranger",
     }
     render () {                                   
        return (
         <Router>
-        <div id='container'>
+        <div  id='container'>
             
             <Switch>
                 <Route path="/signin">
@@ -166,6 +174,11 @@ export default class Home extends Component {
                 <Route path="/signup">
                     <Base/>
                     <SignUp />
+                </Route>
+                <Route path="/stank">
+                    <h2>Welcome, 
+                        {localStorage.getItem('user') ? localStorage.getItem('user') : this.state.user}!
+                    </h2>
                 </Route>
                 <Route path="/">
                     <h2>Welcome!</h2>
