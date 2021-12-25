@@ -6,7 +6,7 @@ var Auth = new AuthServices();
         console.log("Was something printed above?");
         Auth.SignUp(req.query.email, req.query.password, req.query.name).then(
             (doc) => {
-                doc.then(console.log("New Document: ", doc));
+                console.log("New Document: ", doc);
                 return next();
             }).catch((err) => res.status(403).send(err.message));
     }

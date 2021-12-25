@@ -67,7 +67,7 @@ constructor(props){
                          placeholder="Email" value={this.state.email} onChange={this.handleEmailChange}/>          
                         <input className='input' type="password" 
                          placeholder="Password" value={this.state.password} onChange={this.handlePasswordChange}/>
-                        <button onClick={(e) => this.signUp(e)}>
+                        <button className="button" onClick={(e) => this.signUp(e)}>
                             Sign Up
                         </button>
                     </form>
