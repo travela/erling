@@ -24,13 +24,13 @@ And finally to ensure the mongod service is up and running:
 
 ### Start server
 
-Now you may run the server with:
+Now, from within the api directory, you may run the server with:
 
 > ``node app.js``
 
 ## Webapp
 
-Simply run
+From within the webapp directory, simply run
 
 > ``npm start``
 
