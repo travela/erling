@@ -10,13 +10,22 @@ Follow these instructions to get it up and running:
 First we need a database running in the background to save data like login credential in order to properly operate the webapp.
 For this, do the following:
 
-> ``wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -``
->
-> ``echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/5.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list``
->
 > ``sudo apt update``
->
-> ``sudo apt install mongodb-org``
+
+> ``sudo apt install -y docker.io``
+
+> ``sudo systemctl enable --now docker``
+
+
+> ``docker run -d \
+  --name mongodb \
+  -p 27017:27017 \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password123 \
+  -v mongodb_data:/data/db \
+  mongo:8.0
+  ``
+
 
 And finally to ensure the mongod service is up and running:
 

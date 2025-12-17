@@ -13,8 +13,14 @@ class AuthService {
       password: passwordHashed,
       email : email,
       name : name,
-    }).catch((err) => {console.log("There was an error during Signup: ", err.errmsg); throw new Error('User exists already');});
-
+}).catch((err) => {
+  console.log("There was an error during Signup: ", err);
+  // Check if it's actually a duplicate key error
+  if (err.code === 11000) {
+    throw new Error('User exists already');
+  }
+  throw new Error(`Signup failed: ${err.message}`);
+});
     return {
       // MAKE SURE TO NEVER SEND BACK THE PASSWORD!!!!
       user: {

@@ -23,7 +23,9 @@ var Auth = new AuthServices();
     }
 
 
-    what = (req, res) => res.send('NEXT!');
+    what = (req, res) => res.send('sign up successful! Please log in.');
+    
+
 
 module.exports.signup = signup
 module.exports.signin = signin

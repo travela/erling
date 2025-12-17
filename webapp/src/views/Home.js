@@ -36,11 +36,13 @@ constructor(props){
             password : this.state.password,
             name : this.state.name,
             }
-        }).then((res) => {console.log(res); return(res);}
-            ).then((res) => this.setState({email: res.data})
+        }).then((res) => {alert("Sign Up successful! Please log in.")
+                this.setState({password : "", email : "", name : ""});
+                // redirect to sign in page
+                window.location.href = "/signin";
+            }
                 ).catch((err) => {alert("Error: " + err.response.data)
                 console.log(err.response)})
-        console.log("signUp pressed.");
     }
 
     handlePasswordChange(event){
@@ -101,11 +103,10 @@ constructor(props){
             name : this.state.name,
             }
         }).then((res) => {
-            console.log(res)
-            console.log(res.data);
+            localStorage.setItem('user', this.state.name);
+            localStorage.setItem('token', res.data.token);
             this.setState(
                 {token : res.data.token, loggedIn : true}, );
-            this.storeSession();
             }).catch((err) => {      alert("Error: " + err.response.data)
                                         console.log(err.response.data)})
     }
@@ -157,10 +158,36 @@ function Base(){
     );
 }
 
+class Welcome extends Component {
+    state = {
+        user: "Stranger"
+    }
+
+    componentDidMount() {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            this.setState({ user: storedUser });
+        }
+    }
+
+    render() {
+        return <h2>Welcome, {this.state.user}!</h2>
+    }
+}
+
 export default class Home extends Component {
     state = { 
         user : "Stranger",
     }
+
+    componentDidMount() {
+        // Update user from localStorage when component mounts
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            this.setState({ user: storedUser });
+        }
+    }
+
     render () {                                   
        return (
         <Router>
@@ -176,9 +203,7 @@ export default class Home extends Component {
                     <SignUp />
                 </Route>
                 <Route path="/stank">
-                    <h2>Welcome, 
-                        {localStorage.getItem('user') ? localStorage.getItem('user') : this.state.user}!
-                    </h2>
+                    <Welcome />
                 </Route>
                 <Route path="/">
                     <h2>Welcome!</h2>
