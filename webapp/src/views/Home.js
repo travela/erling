@@ -170,8 +170,21 @@ class Welcome extends Component {
         }
     }
 
+    handleLogout = () => {
+        localStorage.removeItem('user');
+        localStorage.removeItem('token');
+        window.location.href = '/';
+    }
+
     render() {
-        return <h2>Welcome, {this.state.user}!</h2>
+        return (
+            <div>
+                {localStorage.getItem('token') && <button onClick={this.handleLogout} className="logout-button">
+                    Logout
+                </button>}
+                <h2>Welcome, {this.state.user}!</h2>
+            </div>
+        )
     }
 }
 
